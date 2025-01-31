@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .login-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .login-title {
+            color: #2d3748;
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .login-form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .login-label {
+            display: block;
+            color: #4a5568;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .login-input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .login-button:active {
+            background: #5a67d8;
+            transform: translateY(1px);
+        }
+
+        .login-alert {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .login-info {
+            background: #e6fffa;
+            color: #234e52;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+
+        .login-register-link {
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .login-register-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .login-checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+
+        .login-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+
+        @media (max-width: 360px) {
+            .login-container {
+                padding: 15px;
+            }
+
+            .login-title {
+                font-size: 1.5em;
+            }
+
+            .login-input,
+            .login-button {
+                padding: 10px;
+            }
+
+            .login-label {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (hover: hover) {
+            .login-button:hover {
+                background: #5a67d8;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .login-register-link a:hover {
+                text-decoration: underline;
+            }
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <h1 class="login-title">Connexion</h1>
+            </div>
+
+            <form method="post">
+                {% if error %}
+                    <div class="login-alert">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="login-info">
+                        Vous êtes connecté en tant que {{ app.user.userIdentifier }}, 
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </div>
+                {% endif %}
+
+                <div class="login-form-group">
+                    <label for="username" class="login-label">Email</label>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username" 
+                           class="login-input" autocomplete="email" required autofocus>
+                </div>
+
+                <div class="login-form-group">
+                    <label for="password" class="login-label">Mot de passe</label>
+                    <input type="password" name="_password" id="password" 
+                           class="login-input" autocomplete="current-password" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="login-checkbox-group">
+                    <input type="checkbox" name="_remember_me" id="_remember_me" class="login-checkbox">
+                    <label for="_remember_me" class="login-label">Se souvenir de moi</label>
+                </div>
+
+                <button class="login-button" type="submit">
+                    Se connecter
+                </button>
+
+                <div class="login-register-link">
+                    Pas encore de compte ?<a href="{{ path('app_register') }}">S'inscrire</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

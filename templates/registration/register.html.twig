@@ -1,0 +1,250 @@
+{# templates/registration/register.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .register-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .register-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .register-title {
+            color: #2d3748;
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+       
+
+        .register-form-group {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .register-label {
+            display: block;
+            color: #4a5568;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .register-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .register-input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .register-checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+
+        .register-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+
+        .register-button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .register-button:active {
+            background: #5a67d8;
+            transform: translateY(1px);
+        }
+
+        .register-error {
+            color: #e53e3e;
+            font-size: 0.8em;
+            margin-top: 4px;
+            padding-left: 2px;
+        }
+
+        .register-login-link {
+            text-align: center;
+            color: #4a5568;
+            font-size: 0.9em;
+        }
+
+        .register-login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        @media (max-width: 360px) {
+            .register-container {
+                padding: 15px;
+            }
+
+            .register-title {
+                font-size: 1.5em;
+            }
+
+          
+
+            .register-input,
+            .register-button {
+                padding: 10px;
+            }
+
+            .register-label {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (min-width: 361px) and (max-width: 480px) {
+            .register-container {
+                padding: 20px;
+            }
+
+            .register-title {
+                font-size: 1.6em;
+            }
+        }
+
+        .register-input:-webkit-autofill,
+        .register-input:-webkit-autofill:hover,
+        .register-input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0px 1000px white inset;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        @media (hover: hover) {
+            .register-button:hover {
+                background: #5a67d8;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+
+            .register-login-link a:hover {
+                text-decoration: underline;
+            }
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="register-page">
+        <div class="register-container">
+            <div class="register-header">
+                <h1 class="register-title">Créer un compte</h1>
+            </div>
+
+            {{ form_start(registrationForm) }}
+                <div class="register-form-group">
+                    {{ form_label(registrationForm.email, 'Adresse email', {'label_attr': {'class': 'register-label'}}) }}
+                    {{ form_widget(registrationForm.email, {
+                        'attr': {
+                            'class': 'register-input',
+                            'placeholder': 'exemple@domaine.com'
+                        }
+                    }) }}
+                    {% if form_errors(registrationForm.email) %}
+                        <div class="register-error">
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="register-form-group">
+                    {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'register-label'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {
+                        'attr': {
+                            'class': 'register-input',
+                            'placeholder': 'Créez un mot de passe sécurisé'
+                        }
+                    }) }}
+                    {% if form_errors(registrationForm.plainPassword) %}
+                        <div class="register-error">
+                            {{ form_errors(registrationForm.plainPassword) }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="register-checkbox-group">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'register-checkbox'}}) }}
+                    {{ form_label(registrationForm.agreeTerms, "J'accepte les conditions d'utilisation", {'label_attr': {'class': 'register-label'}}) }}
+                </div>
+                {% if form_errors(registrationForm.agreeTerms) %}
+                    <div class="register-error">
+                        {{ form_errors(registrationForm.agreeTerms) }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="register-button">Créer mon compte</button>
+            {{ form_end(registrationForm) }}
+
+            <div class="register-login-link">
+                Déjà membre ?<a href="{{ path('app_login') }}">Se connecter</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
